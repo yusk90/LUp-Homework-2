@@ -4,7 +4,16 @@ window.onload = function (e) {
         formInputList = form.elements,
         container = document.getElementById('container'),
         buttonsWrapper = document.getElementById('buttons-wrapper'),
-        body = document.getElementsByTagName('body')[0];
+        body = document.getElementsByTagName('body')[0],
+        buttonsData = {};
+
+    buttonsData.addClass = addClass;
+    buttonsData.removeClass = removeClass;
+    buttonsData.addTextNode = addTextNode;
+    buttonsData.emptyContainer = emptyContainer;
+    buttonsData.addElement = addElement;
+    buttonsData.removeElement = removeElement;
+    buttonsData.serializeAndShow = serializeAndShow;
 
     //form validation
     form.onsubmit = function (e) {
@@ -82,24 +91,28 @@ window.onload = function (e) {
             elem;
 
         userInputElement = prompt('Element name to add:');
-        userInputElementId = prompt('ID');
-        userInputElementClass = prompt('Class');
+        if (userInputElement !== '' && userInputElement !== null) {
+            userInputElementId = prompt('ID');
+            userInputElementClass = prompt('Class');
 
-        elem = document.createElement(userInputElement);
-        container.appendChild(elem);
-        if (userInputElementId !== '') {
-            elem.id = userInputElementId;
-        }
-        if (userInputElementClass !== '') {
-            elem.className = userInputElementClass;
+            elem = document.createElement(userInputElement);
+            container.appendChild(elem);
+            if (userInputElementId !== '') {
+                elem.id = userInputElementId;
+            }
+            if (userInputElementClass !== '') {
+                elem.className = userInputElementClass;
+            }
         }
     }
 
     function removeElement() {
         var elementToRemove = prompt('Selector to remove:');
 
-        if (container.querySelector(elementToRemove) !== null) {
-            container.removeChild(container.querySelector(elementToRemove));
+        if (elementToRemove !== '') {
+            if (container.querySelector(elementToRemove) !== null) {
+                container.removeChild(container.querySelector(elementToRemove));
+            }
         }
     }
 
@@ -147,27 +160,8 @@ window.onload = function (e) {
         e.preventDefault();
 
         if (e.target.value) {
-            if (e.target.value == 'addClass') {
-                addClass();
-            }
-            if (e.target.value == 'removeClass') {
-                removeClass();
-            }
-            if (e.target.value == 'addTextNode') {
-                addTextNode();
-            }
-            if (e.target.value == 'emptyContainer') {
-                emptyContainer();
-            }
-            if (e.target.value == 'addElement') {
-                addElement();
-            }
-            if (e.target.value == 'removeElement') {
-                removeElement();
-            }
-            if (e.target.value == 'serializeAndShow') {
-                serializeAndShow();
-            }
+            buttonsData[e.target.value]();
         }
     });
+
 };
